@@ -1,0 +1,7 @@
+Created new project from scratch in modular fashion
+Added IHostedService implementations provides out of the box the functionalities for Dependency injection (DI),Logging,Configuration
+Services are written using interfaces so they are testable. Love coding with interfaces ;)
+Reading configuration from appsettings.json or apsettings.{env}.json
+Added serilogger file logging and console logging too
+Wrote test cases
+Added documentation
