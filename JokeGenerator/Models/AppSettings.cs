@@ -10,5 +10,9 @@ namespace JokeGenerator.Models
     {
         public NameServiceData nameServiceData { get; set; }
 
+        public JokeServiceData jokeServiceData { get; set; }
+
+        public CachePolicy cachePolicy { get; set; }
+
     }
 }

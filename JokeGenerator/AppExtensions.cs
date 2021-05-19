@@ -36,6 +36,13 @@ namespace JokeGenerator
                 configClient.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 
+            services.AddHttpClient<IJokeService, JokeService>(configClient =>
+            {
+                configClient.BaseAddress = new System.Uri(configuration.GetValue<string>("JokeServiceData:BaseAddress"));
+                configClient.DefaultRequestHeaders.Clear();
+                configClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
             services.AddHostedService<JokesUIService>();
             return services;
         }

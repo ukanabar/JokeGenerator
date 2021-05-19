@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JokeGenerator.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace JokeGenerator.Interfaces
 {
     public interface INameService
     {
-        Task<string> GetRandomName();
+        Task<NameData> GetRandomName();
     }
 }

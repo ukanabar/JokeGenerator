@@ -31,21 +31,20 @@ namespace JokeGenerator.Services
         #endregion
 
         #region Methods
-        public async Task<string> GetRandomName()
+        public async Task<NameData> GetRandomName()
         {
-            var name = string.Empty;
+            var nameData = new NameData();
             try
             {
                 var streamTask = httpClient.GetStreamAsync(appSettings.nameServiceData.Path);
-                var nameData = await JsonSerializer.DeserializeAsync<NameData>(await streamTask);
-                name = nameData.Name;
+                nameData = await JsonSerializer.DeserializeAsync<NameData>(await streamTask);                
             } 
             catch(Exception ex)
             {
                 //log and eat the exception and return empty name
                 logger.LogError(string.Format("Exception Occurred While Generating Random Name: Message={0} ", ex.Message));
             }
-            return name;         
+            return nameData;         
         }
         #endregion
 
