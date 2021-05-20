@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace JokeGenerator.Services
 {
-    public class NameService: INameService
+    /// <summary>
+    /// Service implementation for name Service Provider 
+    /// </summary>
+    public class NameService : INameService
     {
         #region fields
         private readonly HttpClient httpClient;
@@ -26,25 +29,29 @@ namespace JokeGenerator.Services
         {
             this.httpClient = httpClient;
             this.logger = logger;
-            this.appSettings = appSettings;           
+            this.appSettings = appSettings;
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Name service api calls to get random name
+        /// </summary>
+        /// <returns>Retruns random name details.</returns>
         public async Task<NameData> GetRandomName()
         {
             var nameData = new NameData();
             try
             {
                 var streamTask = httpClient.GetStreamAsync(appSettings.nameServiceData.Path);
-                nameData = await JsonSerializer.DeserializeAsync<NameData>(await streamTask);                
-            } 
-            catch(Exception ex)
+                nameData = await JsonSerializer.DeserializeAsync<NameData>(await streamTask);
+            }
+            catch (Exception ex)
             {
                 //log and eat the exception and return empty name
                 logger.LogError(string.Format("Exception Occurred While Generating Random Name: Message={0} ", ex.Message));
             }
-            return nameData;         
+            return nameData;
         }
         #endregion
 

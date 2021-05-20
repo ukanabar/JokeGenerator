@@ -11,9 +11,13 @@ using System.Threading.Tasks;
 
 namespace JokeGenerator.HostedServices
 {
+    /// <summary>
+    /// Hosted service for JokesGenerator UI
+    /// This method will be called at the application start.
+    /// </summary>
     public class JokesUIService : IHostedService, IDisposable
     {
-        
+
         #region Variables
         private bool disposed = false;
         private readonly ILogger<JokesUIService> logger;
@@ -21,7 +25,7 @@ namespace JokeGenerator.HostedServices
         private readonly IJokeService jokeService;
         #endregion
 
-        #region Constructor
+        #region Ctor
         public JokesUIService(ILogger<JokesUIService> logger, INameService nameService, IJokeService jokeService)
         {
             this.logger = logger;
@@ -36,6 +40,35 @@ namespace JokeGenerator.HostedServices
             DisplayUI();
             return Task.CompletedTask;
         }
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+        /// <param name="disposing">
+        ///   <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            logger.LogInformation($"Is disposed: {disposed}");
+            if (!disposed)
+            {
+                return;
+            }
+            logger.LogInformation("Disposing objects");
+            disposed = true;
+            logger.LogInformation($"Is disposed: {disposed}");
+        }
+
 
         private void DisplayUI()
         {
@@ -45,7 +78,7 @@ namespace JokeGenerator.HostedServices
             {
                 while (true)
                 {
-                    DisplayMainMenu();                  
+                    DisplayMainMenu();
                     var mainOptionKey = GetEnteredKey(Console.ReadKey());
                     if (mainOptionKey == 'c')
                     {
@@ -54,8 +87,8 @@ namespace JokeGenerator.HostedServices
                     else if (mainOptionKey == 'r')
                     {
                         DisplayRandomJokesUI();
-                    } 
-                    else if(mainOptionKey == 'x')
+                    }
+                    else if (mainOptionKey == 'x')
                     {
                         continue;
                     }
@@ -196,34 +229,7 @@ namespace JokeGenerator.HostedServices
             return categories;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>Releases unmanaged and - optionally - managed resources.</summary>
-        /// <param name="disposing">
-        ///   <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            logger.LogInformation($"Is disposed: {disposed}");
-            if (disposed)
-            {
-                return;
-            }
-            logger.LogInformation("Disposing objects");
-            disposed = true;
-            logger.LogInformation($"Is disposed: {disposed}");
-        }
         #endregion
     }
 }

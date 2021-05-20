@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace JokeGenerator.Models
 {
+    /// <summary>
+    /// POCO for Joke client service
+    /// </summary>
     public class JokeServiceData: BaseServiceData
     {
         /// <summary>

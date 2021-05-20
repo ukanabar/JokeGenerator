@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace JokeGenerator.Models
 {
+    /// <summary>
+    /// POCO for cache configuration
+    /// </summary>
     public class CachePolicy
     {
         /// <summary>
         /// Absolute Expiry For Cache
         /// </summary>
-        public int AbsouluteExpiry { get; set; }
+        public int AbsouluteExpiry { get; set; }        
     }
 }
