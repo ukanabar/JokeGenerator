@@ -82,8 +82,6 @@ namespace JokeGenerator.Services
             }
             catch (InvalidCastException ex)
             {
-                // We can't return null because T can be value type
-                // then returns default value for T. For classes it will be null.
                 return default(T);
             }
         }

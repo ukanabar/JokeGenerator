@@ -8,9 +8,9 @@
 - Added documentation
 - Fixed bugs and and refactored the code
 - In original code checking for key 2 was missing from GetEnteredKey method, i am guessing it was intentional and i had to fix it
-- Not expert on reading input from console but Console.Key along with GetEnteredKey was executing next step/action just by pressing the key 
+- Not expert on reading input(Not much of a ui guy,typical backend developer ;)) from console but Console.Key along with GetEnteredKey was executing next step/action just by pressing the key 
   but someplaces needed to read input like int input or something and you have to press enter after that to execute next step so updated the 
-  instruction on ui accordingly
+  instruction on ui accordingly.Did best as per my knowledge
 - Some future improvments or suggestions
    * There still one small issue:
         + When getting n jokes if one request fails to get respose from api we will have that joke returned as string.empty. In current world of 
