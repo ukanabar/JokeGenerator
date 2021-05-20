@@ -39,16 +39,13 @@ namespace JokeGenerator.HostedServices
 
         private void DisplayUI()
         {
-            Console.WriteLine("Press ? and enter to get instructions.");
-            if (Console.ReadLine() == "?")
+            Console.WriteLine("Press I to get instructions.");
+            var startKey = GetEnteredKey(Console.ReadKey());
+            if (startKey == 'i')
             {
                 while (true)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("Press c to get categories");
-                    Console.WriteLine("Press r to get random jokes");
-                    Console.WriteLine("Press x to exit");
-                    var randomName = new NameData();
+                    DisplayMainMenu();                  
                     var mainOptionKey = GetEnteredKey(Console.ReadKey());
                     if (mainOptionKey == 'c')
                     {
@@ -56,47 +53,81 @@ namespace JokeGenerator.HostedServices
                     }
                     else if (mainOptionKey == 'r')
                     {
-                        Console.WriteLine();
-                        Console.WriteLine("Want to use a random name? y/n");                        
-                        var yesNoKey = GetEnteredKey(Console.ReadKey());
-                        if (yesNoKey == 'y')
-                        {
-                            randomName = nameService.GetRandomName().Result;                        
-                        }
-                        Console.WriteLine();
-                        Console.WriteLine("Want to specify a category? y/n");                        
-                        var yesNoKey2 = GetEnteredKey(Console.ReadKey());
-                        if (yesNoKey2 == 'y')
-                        {
-                            Console.WriteLine("Enter category number from displayed categories (1-16) and press enter:");
-                            var categories = DisplayAndGetCategories();
-                            int categoryId = Int32.Parse(Console.ReadLine());
-                            if (categories.ContainsKey(categoryId))
-                            {
-                                Console.WriteLine("How many jokes do you want? (1-9) and press enter:");
-                                int n = Int32.Parse(Console.ReadLine());
-                                var jokes = jokeService.GetMultipleJokes(categories[categoryId], n, randomName.Name,randomName.SurName).Result;
-                                jokes.ForEach(x => { Console.WriteLine(x); });
-                            }                            
-                            
-                        }
-                        else
-                        {
-                            Console.WriteLine("How many jokes do you want? (1-9) and press enter:");
-                            int n = Int32.Parse(Console.ReadLine());
-                            var jokes = jokeService .GetMultipleJokes(string.Empty, n, randomName.Name, randomName.SurName).Result;
-                            jokes.ForEach(x => { Console.WriteLine(x); });
-                        }
+                        DisplayRandomJokesUI();
                     } 
                     else if(mainOptionKey == 'x')
                     {
-                        System.Environment.Exit(0);
+                        continue;
                     }
                 }
             }
 
         }
 
+
+        private void DisplayMainMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press c to get categories");
+            Console.WriteLine("Press r to get random jokes");
+        }
+
+        private void DisplayRandomJokesUI()
+        {
+            var randomName = new NameData();
+            Console.WriteLine();
+            Console.WriteLine("Want to use a random name? y/n");
+            var yesNoKey = GetEnteredKey(Console.ReadKey());
+            if (yesNoKey == 'y')
+            {
+                randomName = nameService.GetRandomName().Result;
+            }
+            Console.WriteLine();
+            Console.WriteLine("Want to specify a category? y/n");
+            var yesNoKey2 = GetEnteredKey(Console.ReadKey());
+            if (yesNoKey2 == 'y')
+            {
+                DisplayJokesAsPerCategory(randomName);
+            }
+            else
+            {
+                DisplayJokesAsPerUserInput(string.Empty, randomName);
+            }
+        }
+
+        private void DisplayJokesAsPerUserInput(string category, NameData randomName)
+        {
+            Console.WriteLine();
+            Console.WriteLine("How many jokes do you want? (1-9) and press enter:");
+            int n;
+            string result2 = Console.ReadLine();
+            while (!Int32.TryParse(result2, out n) || (n > 9 || n < 1))
+            {
+                Console.WriteLine("Please enter valid number of jokes from (1-9) and press enter:");
+                result2 = Console.ReadLine();
+            }
+            var jokes = jokeService.GetMultipleJokes(category, n, randomName.Name, randomName.SurName).Result;
+            jokes.ForEach(x => { Console.WriteLine(x); });
+        }
+
+        private void DisplayJokesAsPerCategory(NameData randomName)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Enter category number from displayed categories (1-16) and press enter:");
+            var categories = DisplayAndGetCategories();
+            int categoryId;
+            string result = Console.ReadLine();
+            while (!Int32.TryParse(result, out categoryId) || (categoryId > 16 || categoryId < 1))
+            {
+                Console.WriteLine("Please enter valid categoryId from (1-16) and press enter:");
+
+                result = Console.ReadLine();
+            }
+            if (categories.ContainsKey(categoryId))
+            {
+                DisplayJokesAsPerUserInput(categories[categoryId], randomName);
+            }
+        }
         private char GetEnteredKey(ConsoleKeyInfo consoleKeyInfo)
         {
             char key = 'x';
@@ -143,6 +174,9 @@ namespace JokeGenerator.HostedServices
                     break;
                 case ConsoleKey.N:
                     key = 'n';
+                    break;
+                case ConsoleKey.I:
+                    key = 'i';
                     break;
                 default:
                     key = 'x';
