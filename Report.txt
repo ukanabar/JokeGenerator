@@ -12,7 +12,7 @@
   but someplaces needed to read input like int input or something and you have to press enter after that to execute next step so updated the 
   instruction on ui accordingly.Did best as per my knowledge
 - Some future improvments or suggestions
-   * There still one small issue:
+   * There is still one small issue:
         + When getting n jokes if one request fails to get respose from api we will have that joke returned as string.empty. In current world of 
           microservices and cloud we can wrap api call in retry using polly to handle transient error/faults or add circuit breaker if service is 
           deemed down for longer period so we don't waste resources in making further calls. On UI this issue is handle using matching the specified 
