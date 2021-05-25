@@ -1,5 +1,5 @@
 - Created new project from scratch in modular fashion. As i love green field project ;)
-- Added IHostedService implementations provides out of the box the functionalities for Dependency injection (DI),Logging,Configuration
+- Added IHostedService implementations which provides out of the box the functionalities for Dependency injection (DI),Logging,Configuration
 - Services are written using interfaces so they are testable. Love coding with interfaces ;)
 - Reading configuration from appsettings.json or apsettings.{env}.json
 - Added serilogger file logging and console logging too
@@ -13,11 +13,10 @@
   instruction on ui accordingly.Did best as per my knowledge
 - Some future improvments or suggestions
    * There is still one small issue:
-        + When getting n jokes if one request fails to get respose from api we will have that joke returned as string.empty. In current world of 
+        + When getting n number of jokes if one request fails to get respose from api, we will have that joke returned as string.empty. In current world of 
           microservices and cloud we can wrap api call in retry using polly to handle transient error/faults or add circuit breaker if service is 
-          deemed down for longer period so we don't waste resources in making further calls. On UI this issue is handle using matching the specified 
-          count and returned result count. Best soultion whould have been to write and make a call which returns batch of jokes by category in case 
-          if we are writing backend code. I was not able to find any such api which returns n number of jokes by category.
+          deemed down for longer period so we don't waste resources in making further calls. On UI this issue can be handled by matching the specified 
+          count and returned result count. Best soultion whould have been to write batch api and make a call to that to get jokes by category in case if we are writing backend code. I was not able to find any such api which returns batch of n numbers of jokes by category.
    * Also for caching i have added code in service class itself. In ideal world or in my current organization we have created nuget packages 
      where we have ICaching interface and we use CachingProvider (for memcache) and DistributedCachingProvider (for redis) which we use along
      with inteface nuget package as per application caching need
